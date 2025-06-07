@@ -32,7 +32,7 @@ class BoredBlocks{
                 }
                 this.board.push(line);
             }
-            console.log("board=",this.board);
+            //console.log("board=",this.board);
         }else{
             for ( let i = 0;  i < 10;  i++ ) {
                 for ( let j = 0; j < 15; j++) {
@@ -63,16 +63,47 @@ class Click{
             this.dx = this.cy/50;
             this.dy = parseInt(this.dy);//2.52や2.79とかになって配列が検知できずエラーが起きるためint化
             this.dx = parseInt(this.dx);
-            console.log(board[this.dx][this.dy])
+            console.log(board[this.dy][this.dx])
+            this.cp = board[this.dy][this.dx] //クリックされた色の記号
+            let count = this.direction(board)
+            //console.log("count",count)
             //[[0,0,1,1,2,3,2,0,3,0,1,1],
             // [3,1,0,1,3,0,0,1,2,2,3,2]...]
         });
     }
-    direction(){//検知したブロックの周囲に同じブロックがあるかを検知
-        dirs = [[0,1],
-                [0,-1],
-                [1,0],
-                [-1,0]]   
+    direction(board){//検知したブロックの周囲に同じブロックがあるかを検知
+        let count = 0;
+        let visited = []; //一度訪れたか 0...False 1...True
+        for (let y = 0; y < board.length; y++) { 
+            let row = [];
+            for (let x = 0; x < board[0].length; x++) {
+                row.push(0);
+            } 
+            visited.push(row);
+        }
+        let stack = [[this.dy, this.dx]]; //初期の0,-1は2番目左端の3,本来はクリックした地点
+        const dirs = [
+            [0, 1],   // 右
+            [0, -1],  // 左
+            [1, 0],   // 下
+            [-1, 0]   // 上
+        ];
+        while (stack.length > 0) {
+            const [y, x] = stack.pop();//今の場所のスタックを取り除く
+            if (y < 0 || x < 0 || y >= board || x >= board[0].length || visited[y][x] === 1 || board[y][x] !== this.cp){//範囲から外れているか、今のdydxが3か、一度いたかでなかったら戻る
+                continue;//最初のwhileに戻る(breakだとwhileから抜けてしまうため使わない) 
+            }
+            visited[y][x] = 1;
+            count += 1;
+            for (let [ny, nx] of dirs) {//上下左右にある同じ色をスタックに入れる
+                let newy = y + ny;
+                let newx = x + nx;
+                stack.push([newy, newx]);
+                //console.log(dirx,diry)
+            }
+        }
+
+    return count;
     }
 }
 function main(){
@@ -89,7 +120,10 @@ function main(){
         ctx.beginPath();
         //ctx.fillRect(20, 300, 50, 50)
         ctx.fill();
+        //ctx.font = '55px Arial'; // フォント設定
         B.update(ctx);
+        //ctx.fillStyle = 'blue'; 
+        //ctx.fillText('Hello World', 20, 100); // (20, 100)の位置に文字を表示
         requestAnimationFrame(loop);
     }
     loop()
