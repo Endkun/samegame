@@ -51,19 +51,19 @@ class Click{
     constructor(){
         this.cx = 0;//キャンバス内でクリックしたxy
         this.cy = 0;
-        this.dx = 0;//cx,cyを50で割って二次元配列に対応したxy
-        this.dy = 0;
+        this.dy = 0;//cx,cyを50で割って二次元配列に対応したxy
+        this.dx = 0;
     }
     click(canvasx,board){//クリックの場所(ブロック)の検知
         canvasx.addEventListener('click', e => {
             let rect = e.target.getBoundingClientRect();
             this.cx = e.clientX - rect.left;//cx = eventで読み取られたx-キャンバスの大きさの左端
             this.cy = e.clientY - rect.top;
-            this.dx = this.cx/50;
-            this.dy = this.cy/50;
-            this.dx = parseInt(this.dx);//2.52や2.79とかになって配列が検知できずエラーが起きるためint化
-            this.dy = parseInt(this.dy);
-            console.log(board[this.dy][this.dx])
+            this.dy = this.cx/50;
+            this.dx = this.cy/50;
+            this.dy = parseInt(this.dy);//2.52や2.79とかになって配列が検知できずエラーが起きるためint化
+            this.dx = parseInt(this.dx);
+            console.log(board[this.dx][this.dy])
             //[[0,0,1,1,2,3,2,0,3,0,1,1],
             // [3,1,0,1,3,0,0,1,2,2,3,2]...]
         });
