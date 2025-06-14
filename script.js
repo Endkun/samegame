@@ -12,18 +12,20 @@ class BoredBlocks{
         this.red.src = 'img/red.png';
         this.blue = new Image();
         this.blue.src = 'img/blue.png';
-        this.white = new Image();
-        this.white.src = 'img/green.png';
+        this.green = new Image();
+        this.green.src = 'img/green.png';
         this.yellow = new Image();
         this.yellow.src = 'img/yellow.png';
         this.pink = new Image();
         this.pink.src = 'img/pink.png';
-        this.tiles = [this.red,this.blue,this.white,this.yellow,this.pink]
+        this.white = new Image();
+        this.white.src = 'img/white.png';
+        this.tiles = [this.red,this.blue,this.green,this.yellow,this.pink,this.white]
         if (this.board.length == 0){
             for (let i = 0; i < 10; i++) {
                 let line = [];
                 for (let j = 0; j<15; j++ ){
-                    line.push(Math.floor(Math.random() * 5)); // 0〜99のランダムな整数 
+                    line.push(Math.floor(Math.random() * 5)); // 0〜4のランダムな整数 
                 }
                 this.board.push(line);
             }
@@ -39,7 +41,6 @@ class BoredBlocks{
                 ctx.drawImage(this.tiles[this.mapnum], 0, 0, this.w, this.h, this.mx, this.my, this.w, this.h );
                 this.mx += 50;
             }
-                
             this.mx = 0;
             this.my += 50;
         }
@@ -94,6 +95,8 @@ class Click{
             }
             visited[y][x] = 1;
             count += 1;
+            board[y][x] = 5
+            console.log(this.board)
             for (let [ny, nx] of dirs) {//上下左右にある同じ色をスタックに入れる
                 let newy = y + ny;
                 let newx = x + nx;
