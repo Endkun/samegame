@@ -20,7 +20,7 @@ class BoredBlocks{
         this.pink.src = 'img/pink.png';
         this.white = new Image();
         this.white.src = 'img/white.png';
-        this.tiles = [this.red,this.blue,this.green,this.yellow,this.pink,this.white]
+        this.tiles = [this.red,this.blue,this.green,this.yellow,this.pink,this.white]//0が赤,1が青,2が緑,3が黄色,4がピンク,5がwhite
         if (this.board.length == 0){
             for (let i = 0; i < 10; i++) {
                 let line = [];
@@ -89,13 +89,14 @@ class Click{
             [-1, 0]   // 上
         ];
         while (stack.length > 0) {
-            const [y, x] = stack.pop();//今の場所のスタックを取り除く
+            const [y, x] = stack.pop(
+            );//今の場所のスタックを取り除く
             if (y < 0 || x < 0 || y >= board.length || x >= board[0].length || visited[y][x] === 1 || board[y][x] !== this.cp){//範囲から外れているか、今のdydxが3か、一度いたかでなかったら戻る
                 continue;//最初のwhileに戻る(breakだとwhileから抜けてしまうため使わない) 
             }
             visited[y][x] = 1;
             count += 1;
-            board[y][x] = 5
+            board[y][x] = 5;
             console.log(this.board)
             for (let [ny, nx] of dirs) {//上下左右にある同じ色をスタックに入れる
                 let newy = y + ny;
@@ -104,7 +105,10 @@ class Click{
                 //console.log(dix,diry)
             }
         }
-
+        if (count === 1){
+            board[this.dy][this.dx] = this.cp;
+        }
+        
     return count;
     }
 }
