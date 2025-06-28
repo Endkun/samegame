@@ -66,7 +66,9 @@ class Click{
             //console.log(board[this.dy][this.dx])
             this.cp = board[this.dy][this.dx] //クリックされた色の記号
             let count = this.direction(board)
-            console.log("count",count)
+            let drop = this.drop(board)
+            let fillup = this.fillup(board)
+            //console.log("count",count)
             //[[0,0,1,1,2,3,2,0,3,0,1,1],
             // [3,1,0,1,3,0,0,1,2,2,3,2]...]
         });
@@ -110,6 +112,60 @@ class Click{
         }
         
     return count;
+    }
+    drop(board){
+        let copyboard = board
+        let visited = [];
+        for (let i = 0; i < copyboard.length; i++){
+            let row = [];
+            for (let j = 0; j < copyboard[0].length; j++){
+                row.push(5);
+            }
+            visited.push(row)
+        }
+
+        for (let x = 0; x < copyboard[0].length; x++){
+            let ln = copyboard.length -1;
+            for (let y = copyboard.length-1; y >= 0; y--){
+                if (copyboard[y][x] !== 5){
+                    visited[ln][x] = copyboard[y][x];
+                    ln -= 1;
+                }
+            }
+        }
+
+        for (let y = 0; y < board.length; y++) {
+            for (let x = 0; x < board[0].length; x++) {
+                board[y][x] = visited[y][x];
+            }
+        }
+    }
+    fillup(board){
+        let copyboard = board
+        let visited = [];
+        for (let i = 0; i < copyboard.length; i++){
+            let row = [];
+            for (let j = 0; j < copyboard[0].length; j++){
+                row.push(5);
+            }
+            visited.push(row)
+        }
+
+        for (let y = 0; y < copyboard.length; y++){
+            let cl = 0
+            for (let x = 0; x < copyboard[0].length; x++){
+                if (copyboard[y][x] !== 5){
+                    visited[y][cl] = copyboard[y][x];
+                    cl += 1;
+                }
+            }
+        }
+
+        for (let y = 0; y < board.length; y++) {
+            for (let x = 0; x < board[0].length; x++) {
+                board[y][x] = visited[y][x];
+            }
+        }
     }
 }
 function main(){
