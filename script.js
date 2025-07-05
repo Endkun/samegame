@@ -68,6 +68,7 @@ class Click{
             let count = this.direction(board)
             let drop = this.drop(board)
             let fillup = this.fillup(board)
+            console.log("@71",board)
             //console.log("count",count)
             //[[0,0,1,1,2,3,2,0,3,0,1,1],
             // [3,1,0,1,3,0,0,1,2,2,3,2]...]
@@ -99,7 +100,7 @@ class Click{
             visited[y][x] = 1;
             count += 1;
             board[y][x] = 5;
-            console.log(this.board)
+            //console.log(this.board)
             for (let [ny, nx] of dirs) {//上下左右にある同じ色をスタックに入れる
                 let newy = y + ny;
                 let newx = x + nx;
@@ -123,7 +124,6 @@ class Click{
             }
             visited.push(row)
         }
-
         for (let x = 0; x < copyboard[0].length; x++){
             let ln = copyboard.length -1;
             for (let y = copyboard.length-1; y >= 0; y--){
@@ -151,21 +151,25 @@ class Click{
             visited.push(row)
         }
 
-        for (let y = 0; y < copyboard.length; y++){
-            let cl = 0
-            for (let x = 0; x < copyboard[0].length; x++){
+        let kekkax = 0
+        for (let x = 0; x < copyboard[0].length; x++){
+            let zero = true
+            for (let y = 0; y < copyboard.length; y++){
                 if (copyboard[y][x] !== 5){
-                    visited[y][cl] = copyboard[y][x];
-                    cl += 1;
+                    zero = false
+                    break;
                 }
             }
-        }
-
-        for (let y = 0; y < board.length; y++) {
-            for (let x = 0; x < board[0].length; x++) {
-                board[y][x] = visited[y][x];
+            if (zero === false){
+                for (let y = 0; y < copyboard.length; y++){
+                    visited[y][kekkax] = copyboard[y][x];
+                }
+                kekkax += 1
             }
         }
+        board = visited
+        console.log("@171",board)
+        return board
     }
 }
 function main(){
