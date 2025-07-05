@@ -167,9 +167,13 @@ class Click{
                 kekkax += 1
             }
         }
-        board = visited
+        for (let y = 0; y < board.length; y++){
+            for (let x = 0; x < board[0].length; x++){
+                board[y][x] = visited[y][x];
+            }
+        }
         console.log("@171",board)
-        return board
+
     }
 }
 function main(){
