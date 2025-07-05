@@ -53,6 +53,7 @@ class Click{
         this.cy = 0;
         this.dy = 0;//cx,cyを50で割って二次元配列に対応したxy
         this.dx = 0;
+        this.point = 0
     }
     click(canvasx,board){//クリックの場所(ブロック)の検知
         canvasx.addEventListener('click', e => {
@@ -62,7 +63,7 @@ class Click{
             this.dy = this.cy/50;
             this.dx = this.cx/50;
             this.dy = parseInt(this.dy);//2.52や2.79とかになって配列が検知できずエラーが起きるためint化
-            this.dx = parseInt(this.dx);
+            this.dx = parseInt(this.dx)
             //console.log(board[this.dy][this.dx])
             this.cp = board[this.dy][this.dx] //クリックされた色の記号
             let count = this.direction(board)
@@ -77,6 +78,8 @@ class Click{
     direction(board){//検知したブロックの周囲に同じブロックがあるかを検知
         let count = 0;
         let visited = []; //一度訪れたか 0...False 1...True
+        let point = 0;
+        let white = 0
         for (let y = 0; y < board.length; y++) { 
             let row = [];
             for (let x = 0; x < board[0].length; x++) {
@@ -111,8 +114,10 @@ class Click{
         if (count === 1){
             board[this.dy][this.dx] = this.cp;
         }
-        
-    return count;
+        if (count >= 2 && this.cp !== 5){
+            this.point = this.point + count * 2;
+            return count,point;
+        }
     }
     drop(board){
         let copyboard = board
@@ -192,8 +197,8 @@ function main(){
         ctx.fill();
         //ctx.font = '55px Arial'; // フォント設定
         B.draw(ctx);
-        //ctx.fillStyle = 'blue'; 
-        //ctx.fillText('Hello World', 20, 100); // (20, 100)の位置に文字を表示
+        ctx.fillStyle = 'blue'; 
+        ctx.fillText(C.point, 20, 550); // (20, 100)の位置に文字を表示
         requestAnimationFrame(loop);
     }
     loop()
